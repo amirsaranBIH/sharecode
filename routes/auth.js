@@ -22,12 +22,14 @@ router.route('/signup')
         username: req.body.username,
         email: req.body.email
       };
+      
       User.register(newUser, req.body.password, (err, user) => {
         if (err) {
-          console.log('Error: ' + err.toString());
+          console.log('Error: ' + err);
           return res.redirect('/signup');
         }
-        passport.authenticate('local')((req, res) => {
+
+        passport.authenticate('local')(req, res, () => {
           res.redirect('/');
         });
       });
