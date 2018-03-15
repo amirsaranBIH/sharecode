@@ -4,7 +4,8 @@ var express = require('express'),
     passport = require('passport'),
     LocalStrategy = require('passport-local'),
     expressSession = require('express-session'),
-    User = require('./models/User');
+    User = require('./models/User'),
+    flash = require('connect-flash');
 
 mongoose.connect('mongodb://localhost/sharecode');
 
@@ -29,15 +30,18 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
+app.use(flash());
 
 app.use(function(req, res, next) {
   res.locals.currentUser = req.user;
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
   next();
 });
 
 // Routes
-app.use(require('./routes/index'));
 app.use(require('./routes/auth'));
+app.use(require('./routes/index'));
 
 var port = process.env.PORT || 3000;
 

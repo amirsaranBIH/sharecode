@@ -1,0 +1,17 @@
+.flash-message {
+  margin: 25px 0;
+}
+
+.flash-message p {
+  padding: 15px 25px;
+}
+
+.flash-message .success {
+  background-color: #77BA9988;
+  border-left: 15px solid #77BA99;
+}
+
+.flash-message .error {
+  background-color: #E5593488;
+  border-left: 15px solid #E55934;
+}

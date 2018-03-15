@@ -1,9 +1,15 @@
 <% include partials/header %>
-<h1>Login</h1>
 
-<form action="/login" method="POST">
-  <input type="text" name="username" placeholder="Username">
-  <input type="password" name="password" placeholder="Password">
-  <button>Login</button>
-</form>
+<div class="wrapper">
+  <h1>Login</h1>
+
+  <form action="/login" method="POST">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" placeholder="Username">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" pattern=".{5,10}" placeholder="Password">
+    <button>Login</button>
+  </form>
+</div>
+
 <% include partials/footer %>

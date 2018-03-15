@@ -22,7 +22,7 @@ router.route('/signup')
         username: req.body.username,
         email: req.body.email
       };
-      
+
       User.register(newUser, req.body.password, (err, user) => {
         if (err) {
           console.log('Error: ' + err);
@@ -39,7 +39,7 @@ router.route('/signup')
 router.route('/logout')
     .get((req, res) => {
       req.logout();
-      req.redirect('/');
+      res.redirect('/');
     });
 
 module.exports = router;
