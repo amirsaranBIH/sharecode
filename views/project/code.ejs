@@ -1,0 +1,25 @@
+<% include ../partials/header %>
+
+<section id="project">
+  <div class="wrapper">
+    <div class="project-content">
+      <header class="project-header">
+        <div class="project-header-section">
+          <h1><%= project.name %></h1>
+          <p><%= project.language %></p>
+        </div>
+        <div class="project-header-section">
+          <button data-projectId="<%= project._id %>" id="save-button" disabled>Save Changes</button>
+        </div>
+      </header>
+
+      <main class="project-code">
+        <textarea id="code-editor" name="code"><%= project.code %></textarea>
+      </main>
+    </div>
+  </div>
+</section>
+
+<script src="/scripts/code.js"></script>
+
+<% include ../partials/footer %>

@@ -1,0 +1,20 @@
+#project h1 {
+  text-align: left;
+  margin-top: 0;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.project-header-section:first-of-type {
+  flex: 1;
+}
+
+.project-code textarea {
+  min-height: 550px;
+  resize: none;
+}

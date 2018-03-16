@@ -41,6 +41,7 @@ app.use(function(req, res, next) {
 
 // Routes
 app.use(require('./routes/auth'));
+app.use('/project', require('./routes/project'));
 app.use(require('./routes/index'));
 
 var port = process.env.PORT || 3000;

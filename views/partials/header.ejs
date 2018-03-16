@@ -7,6 +7,7 @@
 
     <title>Share Code</title>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="shortcut icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="/stylesheets/main.css">
   </head>
@@ -26,6 +27,7 @@
             <ul>
               <% if (currentUser) { %>
                 <li><a href="/profile/<%= currentUser._id %>">My Profile</a></li>
+                <li><a href="/project/new">Create Project</a></li>
                 <li><a href="/logout">Logout</a></li>
               <% } else { %>
                 <li><a href="/login">Login</a></li>

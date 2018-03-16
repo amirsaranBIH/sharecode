@@ -39,10 +39,22 @@ button, input[type="submit"] {
   background-color: var(--green);
   color: white;
   padding: 10px 20px;
+  outline-color: var(--lightGrey);
   cursor: pointer;
 }
 
-input {
+button:disabled, input[type="submit"]:disabled {
+  opacity: .7;
+  filter: opacity(.7);
+  cursor: not-allowed;
+}
+
+textarea {
+  max-width: 100%;
+  min-width: 100%;
+}
+
+input, textarea {
   display: block;
   width: 100%;
   margin-top: 2px;

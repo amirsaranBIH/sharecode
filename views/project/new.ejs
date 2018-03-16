@@ -1,0 +1,15 @@
+<% include ../partials/header %>
+
+<div class="wrapper">
+  <h1>New Project</h1>
+
+  <form action="/project/new" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Name of the project">
+    <label for="language">Language</label>
+    <input type="text" id="language" name="language" placeholder="What language will you use">
+    <button>Create Project</button>
+  </form>
+</div>
+
+<% include ../partials/footer %>
