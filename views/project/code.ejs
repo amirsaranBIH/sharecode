@@ -6,15 +6,38 @@
       <header class="project-header">
         <div class="project-header-section">
           <h1><%= project.name %></h1>
-          <p><%= project.language %></p>
+          <div class="project-languages">
+            <ul>
+              <% project.languages.forEach((language) => { %>
+                <li><%= language %></li>
+              <% }); %>
+            </ul>
+          </div>
         </div>
-        <div class="project-header-section">
-          <button data-projectId="<%= project._id %>" id="save-button" disabled>Save Changes</button>
-        </div>
+        <% if (canCode) { %>
+          <div class="project-header-section">
+            <button id="save-button" form="code-form" disabled>Save Changes</button>
+          </div>
+        <% } %>
       </header>
 
       <main class="project-code">
-        <textarea id="code-editor" name="code"><%= project.code %></textarea>
+        <% if (canCode) { %>
+          <form id="code-form" action="/project/<%= project._id %>/save?_method=PUT" method="POST">
+            <textarea id="code-editor" name="code"><%= project.code %></textarea>
+          </form>
+          <div class="code-options">
+            <div class="code-option-section">
+              <a class="button" href="/project/<%= project._id %>/contributor/add">Add New Contributor</a>
+            </div>
+            <div class="code-option-section">
+              <a class="button" href="#">Save Code</a>
+              <a class="button" href="#">Download Code</a>
+            </div>
+          </div>
+        <% } else { %>
+          <textarea id="code-editor" name="code" disabled><%= project.code %></textarea>
+        <% } %>
       </main>
     </div>
   </div>

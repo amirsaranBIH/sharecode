@@ -7,14 +7,87 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .project-header-section:first-of-type {
   flex: 1;
 }
 
+.project-code form {
+  width: 100%;
+}
+
 .project-code textarea {
-  min-height: 550px;
+  min-height: 500px;
   resize: none;
+}
+
+.code-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.code-option-section:last-of-type {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.code-option-section:last-of-type .button {
+  margin-left: 10px;
+}
+
+
+.project {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border: 1px solid var(--green);
+  margin-bottom: 10px;
+}
+
+.project:last-of-type {
+  margin-bottom: 0;
+}
+
+.project h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.project-section:last-child {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.project-languages ul {
+  display: flex;
+}
+
+.project-languages ul li {
+  margin-right: 5px;
+  padding: 5px 8px;
+  background-color: var(--green);
+  color: white;
+  border-radius: 2px;
+  font-size: 13px;
+}
+
+.project-languages ul li:last-of-type {
+  margin-right: 0;
+}
+
+.project time {
+  font-size: 13px;
+}
+
+.project-contributors, .project-description {
+  margin-top: 10px;
+}
+
+.project-description {
+  text-overflow: ellipsis;
 }

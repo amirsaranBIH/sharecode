@@ -5,8 +5,12 @@ var ProjectSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
-  language: String,
-  project: String,
+  description: {
+    type: String,
+    trim: true
+  },
+  languages: [String],
+  code: String,
   contributors: [
     {
       type: mongoose.Schema.Types.ObjectId,

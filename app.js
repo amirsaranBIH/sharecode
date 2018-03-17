@@ -5,7 +5,8 @@ var express = require('express'),
     LocalStrategy = require('passport-local'),
     expressSession = require('express-session'),
     User = require('./models/User'),
-    flash = require('connect-flash');
+    flash = require('connect-flash'),
+    methodOverride = require('method-override');
 
 mongoose.connect('mongodb://localhost/sharecode');
 
@@ -14,8 +15,8 @@ var app = express();
 // Passport config
 app.use(expressSession({
   secret: 'This is the secret sentence',
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: false
 }));
 
 app.use(passport.initialize());
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.use(flash());
+app.use(methodOverride('_method'));
 
 app.use(function(req, res, next) {
   res.locals.currentUser = req.user;

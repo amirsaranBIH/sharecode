@@ -1,10 +1,11 @@
-<% include partials/header %>
+<% include ../partials/header %>
 
 <div class="wrapper">
-  <h1>Profile of <%= user.username %></h1>
+
+  <h1>View Other Projects</h1>
 
   <section class="projects">
-    <% user.projects.forEach((project) => { %>
+    <% projects.forEach((project) => { %>
       <div class="project">
         <div class="project-section">
           <h2><%= project.name %></h2>
@@ -16,6 +17,11 @@
             </ul>
           </div>
           <p class="project-description"><%= project.description %></p>
+          <p class="project-contributors"><b>Contributors:</b>
+            <% project.contributors.forEach(contributor => { %>
+              <a href="/profile/<%= contributor._id %>"><%= contributor.username %></a>
+            <% }); %>
+          </p>
         </div>
         <div class="project-section">
           <time datetime="<%= project.created.toISOString(); %>"><%= project.created.toDateString(); %></time>
@@ -26,4 +32,4 @@
   </section>
 </div>
 
-<% include partials/footer %>
+<% include ../partials/footer %>

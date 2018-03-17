@@ -1,9 +1,11 @@
 .flash-message {
-  margin: 25px 0;
+  margin: 15px 0;
 }
 
-.flash-message p {
+.flash-box {
   padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .flash-message .success {

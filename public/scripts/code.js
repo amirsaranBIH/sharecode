@@ -11,7 +11,9 @@ codeEditor.addEventListener('input', () => {
   }
 });
 
-saveButton.addEventListener('click', () => {
+saveButton.addEventListener('click', (e) => {
+  e.preventDefault();
   currentCode = codeEditor.value;
   saveButton.disabled = true;
+  document.getElementById('code-form').submit();
 });

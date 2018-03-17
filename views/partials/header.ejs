@@ -25,9 +25,10 @@
           <!-- Header Navigation -->
           <nav>
             <ul>
+                <li><a href="/projects">View Projects</a></li>
               <% if (currentUser) { %>
-                <li><a href="/profile/<%= currentUser._id %>">My Profile</a></li>
                 <li><a href="/project/new">Create Project</a></li>
+                <li><a href="/profile/<%= currentUser._id %>">My Profile</a></li>
                 <li><a href="/logout">Logout</a></li>
               <% } else { %>
                 <li><a href="/login">Login</a></li>
@@ -44,12 +45,14 @@
         <% if (success && success.length !== 0) { %>
           <div class="flash-box success">
             <p><%= success %></p>
+            <i id="exit-flash-box" class="fa fa-times" aria-hidden="true"></i>
           </div>
         <% } %>
 
         <% if (error && error.length !== 0) { %>
           <div class="flash-box error">
             <p><%= error %></p>
+            <i id="exit-flash-box" class="fa fa-times" aria-hidden="true"></i>
           </div>
         <% } %>
       </div>

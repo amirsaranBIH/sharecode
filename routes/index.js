@@ -1,5 +1,6 @@
 var router = require('express').Router(),
     User = require('../models/User'),
+    Project = require('../models/Project'),
     middleware = require('../middleware');
 
 router.get('/', (req, res) => {
@@ -7,8 +8,8 @@ router.get('/', (req, res) => {
 });
 
 router.route('/profile/:id')
-    .get(middleware.isLoggedIn, (req, res) => {
-      User.findById(req.params.id, (err, user) => {
+    .get((req, res) => {
+      User.findById(req.params.id).populate('projects').exec((err, user) => {
         if (err) {
           res.redirect('back');
         }
@@ -16,6 +17,16 @@ router.route('/profile/:id')
         res.render('profile', {user});
       });
     });
+
+router.get('/projects', (req, res) => {
+  Project.find({}).populate('contributors').exec((err, projects) => {
+    if (err) {
+      req.flash('error', err.toString());
+      return res.redirect('/');
+    }
+    res.render('project/index', {projects});
+  });
+});
 
 router.get('*', (req, res) => {
   res.status(404).send('Error 404 - Page Not Found!');

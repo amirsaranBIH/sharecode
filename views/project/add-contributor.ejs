@@ -1,0 +1,13 @@
+<% include ../partials/header %>
+
+<div class="wrapper">
+  <h1>Add New Contributor</h1>
+
+  <form action="/project/<%= project._id %>/contributor/add?_method=PUT" method="POST">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" placeholder="Username">
+    <button>Add Contributor</button>
+  </form>
+</div>
+
+<% include ../partials/footer %>
