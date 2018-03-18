@@ -13,7 +13,7 @@
           <p class="project-description"><%= project.description %></p>
           <p class="project-contributors"><b>Contributors:</b>
             <% project.contributors.forEach(contributor => { %>
-              <a href="/profile/<%= contributor._id %>"><%= contributor.username %></a>
+              <a href="/profile/<%= contributor._id %>" title="View more projects from <%= contributor.username %>"><%= contributor.username %></a>
             <% }); %>
           </p>
         </div>

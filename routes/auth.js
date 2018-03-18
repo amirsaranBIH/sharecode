@@ -39,6 +39,7 @@ router.route('/signup')
 router.route('/logout')
     .get((req, res) => {
       req.logout();
+      req.flash('success', 'Successfully logged out.');
       res.redirect('/');
     });
 

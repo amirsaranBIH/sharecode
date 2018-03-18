@@ -64,7 +64,7 @@ router.route('/:id')
     });
 
 // Saves/updates the code in the DB
-router.put('/:id/save', middleware.isLoggedIn, (req, res) => {
+router.put('/:id/save', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
   Project.findByIdAndUpdate(req.params.id, {code: req.body.code}, (err, project) => {
     if (err) {
       req.flash('error', err.toString());
@@ -77,7 +77,7 @@ router.put('/:id/save', middleware.isLoggedIn, (req, res) => {
 
 // Adds a new contributor
 router.route('/:id/contributor/add')
-    .get(middleware.isLoggedIn, (req, res) => {
+    .get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
       Project.findById(req.params.id, (err, project) => {
         if (err) {
           req.flash('error', err.toString());
@@ -86,7 +86,7 @@ router.route('/:id/contributor/add')
         res.render('project/add-contributor', {project});
       });
     })
-    .put(middleware.isLoggedIn, (req, res) => {
+    .put(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
       Project.findById(req.params.id, (err, project) => {
         if (err) {
           req.flash('error', err.toString());
@@ -125,6 +125,31 @@ router.route('/:id/contributor/add')
             });
           }
         })
+      });
+    });
+
+router.route('/:id/settings')
+    .get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+      Project.findById(req.params.id, (err, project) => {
+        if (err) {
+          req.flash('error', err.toString());
+          return res.redirect('/project/new');
+        }
+        res.render('project/settings', {project});
+      });
+    })
+    .put(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+      Project.findByIdAndUpdate(req.params.id, {
+        name: req.body.name,
+        language: req.body.language,
+        description: req.body.description
+      }, (err, project) => {
+        if (err) {
+          req.flash('error', err.toString());
+          return res.redirect('/project/new');
+        }
+        req.flash('success', 'Successfully updated project.');
+        res.redirect(`/project/${project._id}`);
       });
     });
 

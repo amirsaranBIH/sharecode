@@ -10,6 +10,7 @@
         </div>
         <% if (canChangeCode) { %>
           <div class="project-header-section">
+            <a href="/project/<%= project._id %>/settings"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
             <button id="save-button" form="code-form" disabled>Save Changes</button>
           </div>
         <% } %>
