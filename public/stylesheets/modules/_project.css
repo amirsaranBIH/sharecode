@@ -116,3 +116,13 @@
 .project-description {
   text-overflow: ellipsis;
 }
+
+.contributors-list h2, .delete-project h2 {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 25px;
+}
+
+.contributors-list button, .delete-project button {
+  background-color: var(--alert);
+}

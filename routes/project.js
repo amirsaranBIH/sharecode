@@ -128,29 +128,94 @@ router.route('/:id/contributor/add')
       });
     });
 
-router.route('/:id/settings')
-    .get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
-      Project.findById(req.params.id, (err, project) => {
+router.delete('/:id/contributor/:contributorId/remove', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+  Project.findById(req.params.id).populate('contributors').exec((err, project) => {
+    if (err) {
+      req.flash('error', err.toString());
+      return res.redirect('back');
+    }
+
+    // Finds the position of the contributor
+    var contributorPos = project.contributors.findIndex(contributor => {
+      return JSON.stringify(contributor._id) === JSON.stringify(req.params.contributorId);
+    });
+
+    // If it finds something remove it
+    if (contributorPos !== -1) {
+      var removedContributor = project.contributors.splice(contributorPos, 1);
+      User.findById(removedContributor[0]._id, (err, user) => {
         if (err) {
           req.flash('error', err.toString());
-          return res.redirect('/project/new');
+          return res.redirect('back');
+        }
+
+        // Finds the position of the project in the contributors list of projects
+        var projectPos = user.projects.findIndex(project => {
+          return JSON.stringify(project._id) === JSON.stringify(req.params.id);
+        });
+
+        // Removes the project from the list
+        user.projects.splice(projectPos, 1);
+        user.save(err => {
+          if (err) {
+            req.flash('error', err.toString());
+            return res.redirect('back');
+          }
+          project.save(err => {
+            if (err) {
+              req.flash('error', err.toString());
+              return res.redirect('back');
+            }
+            req.flash('success', `Successfully removed contributor ${removedContributor[0].username} from project.`);
+            res.redirect(`/project/${project._id}`);
+          });
+        });
+      });
+    // If it doesn't find a contributor redirect with flash message
+    } else {
+      req.flash('error', 'Can\'t find contributor.');
+      return res.redirect('back');
+    }
+  });
+});
+
+// Update the project, remove contributor and delete project
+router.route('/:id/settings')
+    .get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+      Project.findById(req.params.id).populate('contributors').exec((err, project) => {
+        if (err) {
+          req.flash('error', err.toString());
+          return res.redirect(`/project/${project._id}`);
         }
         res.render('project/settings', {project});
       });
-    })
-    .put(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
-      Project.findByIdAndUpdate(req.params.id, {
-        name: req.body.name,
-        language: req.body.language,
-        description: req.body.description
-      }, (err, project) => {
-        if (err) {
-          req.flash('error', err.toString());
-          return res.redirect('/project/new');
-        }
-        req.flash('success', 'Successfully updated project.');
-        res.redirect(`/project/${project._id}`);
-      });
     });
+
+router.put('/:id/update', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+  Project.findByIdAndUpdate(req.params.id, {
+    name: req.body.name,
+    language: req.body.language,
+    description: req.body.description
+  }, (err, project) => {
+    if (err) {
+      req.flash('error', err.toString());
+      return res.redirect(`/project/${project._id}`);
+    }
+    req.flash('success', 'Successfully updated project.');
+    res.redirect(`/project/${project._id}`);
+  });
+});
+
+router.delete('/:id/delete', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+  Project.findByIdAndRemove(req.params.id, (err, project) => {
+    if (err) {
+      req.flash('error', err.toString());
+      return res.redirect(`/profile/${req.user._id}`);
+    }
+
+    req.flash('success', 'Successfully removed project named ' + project.name);
+    return res.redirect(`/profile/${req.user._id}`);
+  });
+});
 
 module.exports = router;

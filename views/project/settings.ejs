@@ -3,7 +3,7 @@
 <div class="wrapper">
   <h1>Project Settings</h1>
 
-  <form action="/project/<%= project._id %>/settings?_method=PUT" method="POST">
+  <form action="/project/<%= project._id %>/update?_method=PUT" method="POST">
     <label for="name">Name</label>
     <input type="text" id="name" name="name" placeholder="Name of the project" value="<%= project.name %>">
     <label for="language">Select Language</label>
@@ -18,6 +18,26 @@
     <textarea id="description" name="description" rows="6" placeholder="Describe your new project"><%= project.description %></textarea>
     <button>Update Project</button>
   </form>
+
+  <section class="contributors-list">
+    <h2>Remove A Contributor</h2>
+    <ul>
+      <% project.contributors.forEach(contributor => { %>
+        <li>
+          <form action="/project/<%= project._id %>/contributor/<%= contributor._id %>/remove?_method=DELETE" method="POST">
+            <button>Remove <%= contributor.username %></button>
+          </form>
+        </li>
+      <% }); %>
+    </ul>
+  </section>
+
+  <section class="delete-project">
+    <h2>Delete Project</h2>
+    <form action="/project/<%= project._id %>/delete?_method=DELETE" method="POST">
+      <button>Remove</button>
+    </form>
+  </section>
 </div>
 
 <% include ../partials/footer %>
