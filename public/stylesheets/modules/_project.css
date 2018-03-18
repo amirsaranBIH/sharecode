@@ -29,12 +29,20 @@
   align-items: center;
 }
 
+.code-option-section {
+  flex: 1;
+}
+
 .code-option-section:last-of-type {
   display: flex;
   justify-content: flex-end;
 }
 
-.code-option-section:last-of-type .button {
+.code-option-section button {
+  width: auto;
+}
+
+.code-option-section:last-of-type button:last-of-type {
   margin-left: 10px;
 }
 
@@ -63,21 +71,14 @@
   justify-content: space-between;
 }
 
-.project-languages ul {
-  display: flex;
-}
-
-.project-languages ul li {
-  margin-right: 5px;
+.project-language {
+  display: inline-block;
   padding: 5px 8px;
   background-color: var(--green);
   color: white;
   border-radius: 2px;
   font-size: 13px;
-}
-
-.project-languages ul li:last-of-type {
-  margin-right: 0;
+  text-transform: uppercase;
 }
 
 .project time {

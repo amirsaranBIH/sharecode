@@ -9,13 +9,7 @@
       <div class="project">
         <div class="project-section">
           <h2><%= project.name %></h2>
-          <div class="project-languages">
-            <ul>
-              <% project.languages.forEach(language => { %>
-                <li><%= language %></li>
-              <% }); %>
-            </ul>
-          </div>
+          <p class="project-language"><%= project.language %></p>
           <p class="project-description"><%= project.description %></p>
           <p class="project-contributors"><b>Contributors:</b>
             <% project.contributors.forEach(contributor => { %>

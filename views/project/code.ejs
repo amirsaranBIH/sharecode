@@ -6,15 +6,9 @@
       <header class="project-header">
         <div class="project-header-section">
           <h1><%= project.name %></h1>
-          <div class="project-languages">
-            <ul>
-              <% project.languages.forEach((language) => { %>
-                <li><%= language %></li>
-              <% }); %>
-            </ul>
-          </div>
+          <p class="project-language"><%= project.language %></p>
         </div>
-        <% if (canCode) { %>
+        <% if (canChangeCode) { %>
           <div class="project-header-section">
             <button id="save-button" form="code-form" disabled>Save Changes</button>
           </div>
@@ -22,7 +16,7 @@
       </header>
 
       <main class="project-code">
-        <% if (canCode) { %>
+        <% if (canChangeCode) { %>
           <form id="code-form" action="/project/<%= project._id %>/save?_method=PUT" method="POST">
             <textarea id="code-editor" name="code"><%= project.code %></textarea>
           </form>
@@ -31,18 +25,26 @@
               <a class="button" href="/project/<%= project._id %>/contributor/add">Add New Contributor</a>
             </div>
             <div class="code-option-section">
-              <a class="button" href="#">Save Code</a>
-              <a class="button" href="#">Download Code</a>
+              <button id="copy-code-button">Copy Code</button>
+              <button id="download-code-button">Download Code</button>
             </div>
           </div>
         <% } else { %>
           <textarea id="code-editor" name="code" disabled><%= project.code %></textarea>
+          <div class="code-options">
+            <div class="code-option-section"></div>
+            <div class="code-option-section">
+              <button id="copy-code-button">Copy Code</button>
+              <button id="download-code-button">Download Code</button>
+            </div>
+          </div>
         <% } %>
       </main>
     </div>
   </div>
 </section>
 
+<script src="/scripts/lib/filesaver.js"></script>
 <script src="/scripts/code.js"></script>
 
 <% include ../partials/footer %>

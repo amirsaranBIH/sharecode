@@ -19,7 +19,6 @@ a.button {
   color: white;
   padding: 10px 20px;
   outline-color: var(--lightGrey);
-  cursor: pointer;
 }
 
 a.button:hover {
@@ -75,7 +74,7 @@ textarea {
   min-width: 100%;
 }
 
-input, textarea {
+input, textarea, select {
   display: block;
   width: 100%;
   margin-top: 2px;
@@ -93,15 +92,27 @@ input:-webkit-autofill {
     -webkit-text-fill-color: var(--green) !important;
 }
 
-input:valid {
+input:valid, select:valid {
   border-color: var(--green);
 }
 
-input:invalid {
+input:invalid, select:invalid {
   border-color: var(--alert);
 }
 
 form {
   width: 75%;
   margin: 0 auto;
+}
+
+.landing {
+  text-align: center;
+}
+
+.landing p {
+  margin: 20px 0;
+}
+
+.landing a.button {
+  margin: 0 10px;
 }

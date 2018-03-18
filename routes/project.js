@@ -3,6 +3,7 @@ var router = require('express').Router(),
     Project = require('../models/Project'),
     middleware = require('../middleware');
 
+// Creating a new project
 router.route('/new')
     .get(middleware.isLoggedIn, (req, res) => {
       res.render('project/new');
@@ -12,7 +13,7 @@ router.route('/new')
       User.findById(req.user._id, (err, user) => {
         var newProject = new Project({
           name: req.body.name,
-          languages: [...req.body.languages.split(',')],
+          language: req.body.language,
           description: req.body.description,
           contributors: [req.user]
         });
@@ -30,12 +31,13 @@ router.route('/new')
               return res.redirect('/project/new');
             }
             req.flash('success', `Successfully created a new project named ${project.name}.`);
-            res.redirect(`/project/${project._id}/code`);
+            res.redirect(`/project/${project._id}`);
           });
         });
       });
     });
 
+// View the project
 router.route('/:id')
     .get((req, res) => {
       Project.findById(req.params.id, (err, project) => {
@@ -44,20 +46,24 @@ router.route('/:id')
           return res.redirect('/');
         }
 
-        var canCode = false;
+        var canChangeCode = false;
 
+        // Checks if the user is logged in
         if (req.user) {
+          // Checks if the user is in the list of contributors
           var isContributor = project.contributors.some(contributor => {
             return JSON.stringify(contributor) === JSON.stringify(req.user._id);
           });
 
-          if (isContributor) canCode = true;
+          // If the user is a contributor give the permission to change code
+          if (isContributor) canChangeCode = true;
         }
 
-        res.render('project/code', {project, canCode});
+        res.render('project/code', {project, canChangeCode});
       });
     });
 
+// Saves/updates the code in the DB
 router.put('/:id/save', middleware.isLoggedIn, (req, res) => {
   Project.findByIdAndUpdate(req.params.id, {code: req.body.code}, (err, project) => {
     if (err) {
@@ -69,6 +75,7 @@ router.put('/:id/save', middleware.isLoggedIn, (req, res) => {
   });
 });
 
+// Adds a new contributor
 router.route('/:id/contributor/add')
     .get(middleware.isLoggedIn, (req, res) => {
       Project.findById(req.params.id, (err, project) => {
@@ -86,6 +93,11 @@ router.route('/:id/contributor/add')
           return res.redirect('back');
         }
         User.findOne({username: req.body.username}, (err, user) => {
+          // Check is the user with the given name exist
+          if (!user) {
+            req.flash('error', 'There is no user with that username');
+            return res.redirect('back');
+          }
           if (err) {
             req.flash('error', err.toString());
             return res.redirect('back');

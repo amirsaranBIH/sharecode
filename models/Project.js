@@ -9,7 +9,7 @@ var ProjectSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
-  languages: [String],
+  language: String,
   code: String,
   contributors: [
     {
