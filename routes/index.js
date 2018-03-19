@@ -1,7 +1,8 @@
 var router = require('express').Router(),
     User = require('../models/User'),
     Project = require('../models/Project'),
-    middleware = require('../middleware');
+    middleware = require('../middleware'),
+    helper = require('../helper');
 
 // Landing page
 router.get('/', (req, res) => {
@@ -22,10 +23,8 @@ router.route('/profile/:id')
 // Displays all projects from users
 router.get('/projects', (req, res) => {
   Project.find({}).populate('contributors').exec((err, projects) => {
-    if (err) {
-      req.flash('error', err.toString());
-      return res.redirect('/');
-    }
+    helper.handleError(err, '/');
+
     res.render('project/index', {projects});
   });
 });

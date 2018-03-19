@@ -1,7 +1,8 @@
 var router = require('express').Router(),
     User = require('../models/User'),
     Project = require('../models/Project'),
-    middleware = require('../middleware');
+    middleware = require('../middleware'),
+    helper = require('../helper');
 
 // Creating a new project
 router.route('/new')
@@ -19,17 +20,11 @@ router.route('/new')
         });
 
         newProject.save((err, project) => {
-          if (err) {
-            req.flash('error', err.toString());
-            return res.redirect('/project/new');
-          }
+          helper.handleError(err, '/project/new');
 
           user.projects.push(project);
           user.save((err) => {
-            if (err) {
-              req.flash('error', err.toString());
-              return res.redirect('/project/new');
-            }
+            helper.handleError(err, '/project/new');
             req.flash('success', `Successfully created a new project named ${project.name}.`);
             res.redirect(`/project/${project._id}`);
           });
@@ -40,11 +35,8 @@ router.route('/new')
 // View the project
 router.route('/:id')
     .get((req, res) => {
-      Project.findById(req.params.id, (err, project) => {
-        if (err) {
-          req.flash('error', err.toString());
-          return res.redirect('/');
-        }
+      Project.findById(req.params.id).populate('contributors').exec((err, project) => {
+        helper.handleError(err, '/');
 
         var canChangeCode = false;
 
@@ -52,24 +44,22 @@ router.route('/:id')
         if (req.user) {
           // Checks if the user is in the list of contributors
           var isContributor = project.contributors.some(contributor => {
-            return JSON.stringify(contributor) === JSON.stringify(req.user._id);
+            return helper.compareIds(contributor._id, req.user._id);
           });
 
           // If the user is a contributor give the permission to change code
           if (isContributor) canChangeCode = true;
         }
 
-        res.render('project/code', {project, canChangeCode});
+        res.render('project/code', {project, canChangeCode, helper});
       });
     });
 
 // Saves/updates the code in the DB
 router.put('/:id/save', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
   Project.findByIdAndUpdate(req.params.id, {code: req.body.code}, (err, project) => {
-    if (err) {
-      req.flash('error', err.toString());
-      return res.redirect('back');
-    }
+    helper.handleError(err, 'back');
+
     req.flash('success', 'Successfully saved project.');
     res.redirect('back');
   });
@@ -79,32 +69,27 @@ router.put('/:id/save', middleware.isLoggedIn, middleware.isContributor, (req, r
 router.route('/:id/contributor/add')
     .get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
       Project.findById(req.params.id, (err, project) => {
-        if (err) {
-          req.flash('error', err.toString());
-          return res.redirect('back');
-        }
+        helper.handleError(err, 'back');
+
         res.render('project/add-contributor', {project});
       });
     })
     .put(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
       Project.findById(req.params.id, (err, project) => {
-        if (err) {
-          req.flash('error', err.toString());
-          return res.redirect('back');
-        }
+        helper.handleError(err, 'back');
+
         User.findOne({username: req.body.username}, (err, user) => {
           // Check is the user with the given name exist
           if (!user) {
             req.flash('error', 'There is no user with that username');
             return res.redirect('back');
           }
-          if (err) {
-            req.flash('error', err.toString());
-            return res.redirect('back');
-          }
+
+          helper.handleError(err, 'back');
+
           // Checks if user is already in the contributors list
           var isAlreadyContributing = project.contributors.some(contributor => {
-            return JSON.stringify(contributor) === JSON.stringify(user._id);
+            return helper.compareIds(contributor, user._id);
           });
 
           if (isAlreadyContributing) {
@@ -115,10 +100,8 @@ router.route('/:id/contributor/add')
             // Push the user to contributors list
             project.contributors.push(user);
             project.save((err) => {
-              if (err) {
-                req.flash('error', err.toString());
-                return res.redirect('/project/new');
-              }
+              helper.handleError(err, '/project/new');
+
               // Redirect to project
               req.flash('success', `Successfully added ${user.username} to list of contributors for this project.`);
               res.redirect(`/project/${project._id}`);
@@ -128,44 +111,40 @@ router.route('/:id/contributor/add')
       });
     });
 
+// Remove contributor from list of contributors
 router.delete('/:id/contributor/:contributorId/remove', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
   Project.findById(req.params.id).populate('contributors').exec((err, project) => {
-    if (err) {
-      req.flash('error', err.toString());
-      return res.redirect('back');
-    }
+    helper.handleError(err, 'back');
 
     // Finds the position of the contributor
     var contributorPos = project.contributors.findIndex(contributor => {
-      return JSON.stringify(contributor._id) === JSON.stringify(req.params.contributorId);
+      return helper.compareIds(contributor._id, req.params.contributorId);
     });
 
     // If it finds something remove it
     if (contributorPos !== -1) {
       var removedContributor = project.contributors.splice(contributorPos, 1);
       User.findById(removedContributor[0]._id, (err, user) => {
-        if (err) {
-          req.flash('error', err.toString());
-          return res.redirect('back');
+        helper.handleError(err, `/project/${project._id}`);
+
+        if (helper.compareIds(removedContributor[0]._id, req.user._id)) {
+          req.flash('error', 'You can\'t remove yourself from the contributor list.');
+          return res.redirect(`/project/${project._id}`);
         }
 
         // Finds the position of the project in the contributors list of projects
         var projectPos = user.projects.findIndex(project => {
-          return JSON.stringify(project._id) === JSON.stringify(req.params.id);
+          return helper.compareIds(project._id, req.params.id);
         });
 
         // Removes the project from the list
         user.projects.splice(projectPos, 1);
         user.save(err => {
-          if (err) {
-            req.flash('error', err.toString());
-            return res.redirect('back');
-          }
+          helper.handleError(err, 'back');
+
           project.save(err => {
-            if (err) {
-              req.flash('error', err.toString());
-              return res.redirect('back');
-            }
+            helper.handleError(err, 'back');
+
             req.flash('success', `Successfully removed contributor ${removedContributor[0].username} from project.`);
             res.redirect(`/project/${project._id}`);
           });
@@ -183,35 +162,30 @@ router.delete('/:id/contributor/:contributorId/remove', middleware.isLoggedIn, m
 router.route('/:id/settings')
     .get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
       Project.findById(req.params.id).populate('contributors').exec((err, project) => {
-        if (err) {
-          req.flash('error', err.toString());
-          return res.redirect(`/project/${project._id}`);
-        }
+        helper.handleError(err, `/project/${project._id}`);
+
         res.render('project/settings', {project});
       });
     });
 
+// Update a project
 router.put('/:id/update', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
   Project.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
     language: req.body.language,
     description: req.body.description
   }, (err, project) => {
-    if (err) {
-      req.flash('error', err.toString());
-      return res.redirect(`/project/${project._id}`);
-    }
+    helper.handleError(err, `/project/${project._id}`);
+
     req.flash('success', 'Successfully updated project.');
     res.redirect(`/project/${project._id}`);
   });
 });
 
+// Delete a project
 router.delete('/:id/delete', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
   Project.findByIdAndRemove(req.params.id, (err, project) => {
-    if (err) {
-      req.flash('error', err.toString());
-      return res.redirect(`/profile/${req.user._id}`);
-    }
+    helper.handleError(err, `/profile/${req.user._id}`);
 
     req.flash('success', 'Successfully removed project named ' + project.name);
     return res.redirect(`/profile/${req.user._id}`);
