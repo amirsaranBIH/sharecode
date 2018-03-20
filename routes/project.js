@@ -16,7 +16,8 @@ router.route('/new')
           name: req.body.name,
           language: req.body.language,
           description: req.body.description,
-          contributors: [req.user]
+          contributors: [req.user],
+          owner: req.user
         });
 
         newProject.save((err, project) => {
@@ -42,6 +43,7 @@ router.route('/:id')
 
         // Checks if the user is logged in
         if (req.user) {
+
           // Checks if the user is in the list of contributors
           var isContributor = project.contributors.some(contributor => {
             return helper.compareIds(contributor._id, req.user._id);
@@ -99,12 +101,17 @@ router.route('/:id/contributor/add')
           } else {
             // Push the user to contributors list
             project.contributors.push(user);
-            project.save((err) => {
-              helper.handleError(err, '/project/new');
+            project.save(err => {
+              helper.handleError(err, `/project/${project._id}`);
 
-              // Redirect to project
-              req.flash('success', `Successfully added ${user.username} to list of contributors for this project.`);
-              res.redirect(`/project/${project._id}`);
+              user.projects.push(project);
+              user.save(err => {
+                helper.handleError(err, `/project/${project._id}`);
+
+                // Redirect to project
+                req.flash('success', `Successfully added ${user.username} to list of contributors for this project.`);
+                res.redirect(`/project/${project._id}`);
+              });
             });
           }
         })
@@ -134,7 +141,7 @@ router.delete('/:id/contributor/:contributorId/remove', middleware.isLoggedIn, m
 
         // Finds the position of the project in the contributors list of projects
         var projectPos = user.projects.findIndex(project => {
-          return helper.compareIds(project._id, req.params.id);
+          return helper.compareIds(project, req.params.id);
         });
 
         // Removes the project from the list
@@ -186,6 +193,18 @@ router.put('/:id/update', middleware.isLoggedIn, middleware.isContributor, (req,
 router.delete('/:id/delete', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
   Project.findByIdAndRemove(req.params.id, (err, project) => {
     helper.handleError(err, `/profile/${req.user._id}`);
+
+    project.contributors.forEach(contributor => {
+      User.findById(contributor, (err, user) => {
+        helper.handleError(err, `/profile/${req.user._id}`);
+
+        var deletedProjectPos = user.projects.some(projectId => {
+          return helper.compareIds(projectId, project._id);
+        });
+        user.projects.splice(deletedProjectPos, 1);
+        user.save();
+      });
+    });
 
     req.flash('success', 'Successfully removed project named ' + project.name);
     return res.redirect(`/profile/${req.user._id}`);

@@ -23,11 +23,13 @@
     <h2>Remove A Contributor</h2>
     <ul>
       <% project.contributors.forEach(contributor => { %>
-        <li>
-          <form action="/project/<%= project._id %>/contributor/<%= contributor._id %>/remove?_method=DELETE" method="POST">
-            <button>Remove <%= contributor.username %></button>
-          </form>
-        </li>
+        <% if (!(JSON.stringify(project.owner) === JSON.stringify(contributor._id))) { %>
+          <li>
+            <form action="/project/<%= project._id %>/contributor/<%= contributor._id %>/remove?_method=DELETE" method="POST">
+              <button>Remove <%= contributor.username %></button>
+            </form>
+          </li>
+        <% } %>
       <% }); %>
     </ul>
   </section>
@@ -35,7 +37,7 @@
   <section class="delete-project">
     <h2>Delete Project</h2>
     <form action="/project/<%= project._id %>/delete?_method=DELETE" method="POST">
-      <button>Remove</button>
+      <button>Delete</button>
     </form>
   </section>
 </div>

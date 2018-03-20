@@ -10,7 +10,7 @@
         </div>
         <% if (canChangeCode) { %>
           <div class="project-header-section">
-            <% if (JSON.stringify(currentUser._id) === JSON.stringify(project.contributors[0]._id)) { %>
+            <% if (JSON.stringify(project.owner) === JSON.stringify(currentUser._id)) { %>
               <a href="/project/<%= project._id %>/settings"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
             <% } %>
             <button id="save-button" form="code-form" disabled>Save Changes</button>
@@ -24,9 +24,11 @@
             <textarea id="code-editor" name="code"><%= project.code %></textarea>
           </form>
           <div class="code-options">
-            <div class="code-option-section">
-              <a class="button" href="/project/<%= project._id %>/contributor/add">Add New Contributor</a>
-            </div>
+            <% if (JSON.stringify(project.owner) === JSON.stringify(currentUser._id)) { %>
+              <div class="code-option-section">
+                <a class="button" href="/project/<%= project._id %>/contributor/add">Add New Contributor</a>
+              </div>
+            <% } %>
             <div class="code-option-section">
               <button id="copy-code-button">Copy Code</button>
               <button id="download-code-button">Download Code</button>
