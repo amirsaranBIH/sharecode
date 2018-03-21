@@ -6,7 +6,8 @@ var express = require('express'),
     expressSession = require('express-session'),
     User = require('./models/User'),
     flash = require('connect-flash'),
-    methodOverride = require('method-override');
+    methodOverride = require('method-override'),
+    io = require('socket.io')(app);
 
 mongoose.connect('mongodb://localhost/sharecode');
 
@@ -52,6 +53,11 @@ mongoose.connection.once('open', () => {
   console.log('MongoDB server up and running...');
 }).on('error', (err) => {
   console.log('Error: ' + err);
+});
+
+io.on('connection', (socket) => {
+  console.log('An user connected');
+  console.log(socket);
 });
 
 app.listen(port, () => {
