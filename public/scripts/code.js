@@ -7,6 +7,15 @@ var codeEditor = document.getElementById('code-editor'),
 
 var currentCode = codeEditor.value;
 
+// Socket connection and logic
+if (io) {
+  var socket = io.connect('http://localhost:3000');
+}
+
+socket.on('code', data => {
+  codeEditor.value = data;
+});
+
 // Checks if you made changes in code
 codeEditor.addEventListener('input', () => {
   if (currentCode === codeEditor.value) {
@@ -14,6 +23,9 @@ codeEditor.addEventListener('input', () => {
   } else {
     saveButton.disabled = false;
   }
+
+  // Emits the code to all contributors live
+  socket.emit('code', codeEditor.value);
 });
 
 // Save code to DB

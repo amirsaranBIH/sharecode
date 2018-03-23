@@ -7,13 +7,13 @@ var express = require('express'),
     User = require('./models/User'),
     flash = require('connect-flash'),
     methodOverride = require('method-override'),
-    io = require('socket.io')(app);
+    socket = require('socket.io');
 
 mongoose.connect('mongodb://localhost/sharecode');
 
 var app = express();
 
-// Passport config
+// Passport setup
 app.use(expressSession({
   secret: 'This is the secret sentence',
   resave: false,
@@ -27,7 +27,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// App config
+// App setup
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -55,11 +55,15 @@ mongoose.connection.once('open', () => {
   console.log('Error: ' + err);
 });
 
-io.on('connection', (socket) => {
-  console.log('An user connected');
-  console.log(socket);
+var server = app.listen(port, () => {
+  console.log('Server started and running on port 3000...');
 });
 
-app.listen(port, () => {
-  console.log('Server started and running on port 3000...');
+// Socket setup
+var io = socket(server);
+
+io.on('connection', (socket) => {
+  socket.on('code', (data) => {
+    socket.broadcast.emit('code', data);
+  });
 });

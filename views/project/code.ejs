@@ -49,11 +49,9 @@
   </div>
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-<script>
-  var socket = io();
-  console.log(socket);
-</script>
+<% if (canChangeCode) { %>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<% } %>
 <script src="/scripts/lib/filesaver.js"></script>
 <script src="/scripts/code.js"></script>
 
