@@ -14,16 +14,12 @@ if (io) {
 
 socket.on('code', data => {
   codeEditor.value = data;
+  checkCodeChange();
 });
 
 // Checks if you made changes in code
 codeEditor.addEventListener('input', () => {
-  if (currentCode === codeEditor.value) {
-    saveButton.disabled = true;
-  } else {
-    saveButton.disabled = false;
-  }
-
+  checkCodeChange();
   // Emits the code to all contributors live
   socket.emit('code', codeEditor.value);
 });
@@ -68,4 +64,13 @@ function clearSelection() {
  } else if (document.selection) {
    document.selection.empty();
  }
+}
+
+// Checks if the code is changed since last save
+function checkCodeChange() {
+  if (currentCode === codeEditor.value) {
+    saveButton.disabled = true;
+  } else {
+    saveButton.disabled = false;
+  }
 }
