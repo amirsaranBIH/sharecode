@@ -5,7 +5,7 @@
     <meta http-equiv="X-UI-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ShareCode - Share your code with other developers.</title>
+    <title>ShareCode - Share your code with other developers</title>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
     <section id="header">
       <div class="wrapper">
         <div class="header-content">
-          <a href="/" title="Go to home page">
+          <a id="brand" href="/" title="Go to home page">
             <picture>
               <source media="(min-width: 768px)" srcset="/images/sharecode.png">
               <img src="/images/sharecode-icon.png" alt="ShareCode">
@@ -26,7 +26,14 @@
           </a>
 
           <!-- Header Navigation -->
-          <nav>
+          <nav class="header-navigation">
+            <div id="navicon">
+              <div class="navicon-lines">
+                <span class="nav-line"></span>
+                <span class="nav-line"></span>
+                <span class="nav-line"></span>
+              </div>
+            </div>
             <ul>
                 <li><a href="/projects">All Projects</a></li>
               <% if (currentUser) { %>

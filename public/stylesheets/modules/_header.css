@@ -1,0 +1,57 @@
+.header-content {
+  text-align: center;
+  margin-top: 15%;
+}
+
+#brand img {
+  width: 125px;
+}
+
+#navicon {
+  display: flex;
+  width: 56px;
+  height: 56px;
+  transform: rotateZ(45deg);
+  background-color: var(--main);
+  position: absolute;
+  z-index: 1000;
+  top: -28px;
+  right: 20px;
+  transition: all .6s ease-in-out;
+}
+
+#navicon .navicon-lines {
+  margin: auto;
+  transform: rotateZ(-45deg) translateY(15px);
+  transition: all .6s ease-in-out;
+}
+
+#navicon span {
+  width: 15px;
+  height: 2px;
+  background-color: white;
+  margin-top: 3px;
+  display: block;
+  transition: all .6s ease-in-out;
+}
+
+#navicon span:first-of-type {
+  margin-top: 0;
+}
+
+.header-navigation ul {
+  display: none;
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.header-navigation ul li a {
+  padding: 20px 0;
+  display: block;
+  background-color: var(--darkBlue);
+  color: white;
+  border-bottom: 1px solid white;
+}
