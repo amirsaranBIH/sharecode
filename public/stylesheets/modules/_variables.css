@@ -1,4 +1,7 @@
 :root {
-  --main: #77BA99;
-  --darkBlue: #19202D;
+  --green: #77BA99;
+  --grey: #2B2B2B;
+  --lightBrown: #eaead7;
+  --lightGrey: #dddddd;
+  --alert: #E55934;
 }

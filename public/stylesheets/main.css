@@ -5,4 +5,12 @@
 
 
 @media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    height: 110px;
+  }
+
+  .header-content a img {
+    margin: 10px 0;
+  }
 }
