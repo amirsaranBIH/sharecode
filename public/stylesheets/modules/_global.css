@@ -12,23 +12,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-h1 {
-  font-size: 38px;
-  margin: 10px 0;
-}
-
-h2 {
-  font-size: 25px;
-}
-
-h3 {
-  font-size: 20px;
-}
-
-strong {
-  font-weight: 700;
-}
-
 a {
   color: inherit;
   text-decoration: none;
@@ -36,68 +19,4 @@ a {
 
 img {
   max-width: 100%;
-}
-
-.btn {
-  display: inline-block;
-  padding: 12px 25px;
-  background-color: var(--main);
-  color: white;
-  margin: 10px 0;
-  font-size: 18px;
-}
-
-.section {
-  padding: 25px 0;
-}
-
-.section-heading {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.section-heading:before {
-  content: "";
-  display: block;
-  height: 22px;
-  width: 22px;
-  background-color: var(--main);
-  transform: rotateZ(45deg);
-  margin: 10px auto;
-}
-
-input, select, textarea {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 4px;
-  border: 1px solid #bbbbbb;
-  outline-color: var(--main);
-}
-
-button {
-  border: none;
-}
-
-button.btn {
-  margin: 0;
-}
-
-p {
-  line-height: 21px;
-  margin: 8px 0;
-}
-
-.form-group {
-  margin: 15px 0;
-}
-
-#footer {
-  background-color: var(--main);
-  padding: 20px 0;
-}
-
-#footer .copyright {
-  color: white;
-  text-align: center;
 }
