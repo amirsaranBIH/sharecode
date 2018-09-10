@@ -7,9 +7,10 @@ var express = require('express'),
     User = require('./models/User'),
     flash = require('connect-flash'),
     methodOverride = require('method-override'),
-    socket = require('socket.io');
+    socket = require('socket.io'),
+    config = require('./config');
 
-mongoose.connect('mongodb://localhost/sharecode');
+mongoose.connect(`mongodb://${config.mlabUser}:${config.mlabPass}@ds151282.mlab.com:51282/sharecode`);
 
 var app = express();
 
