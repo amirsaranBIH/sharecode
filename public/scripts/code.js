@@ -9,7 +9,7 @@ var currentCode = codeEditor.value;
 
 // Socket connection and logic
 if (io) {
-  var socket = io.connect('http://localhost:3000');
+  var socket = io.connect(window.location.origin);
 }
 
 socket.on('code', data => {
