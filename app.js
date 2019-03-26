@@ -7,10 +7,9 @@ var express = require('express'),
     User = require('./models/User'),
     flash = require('connect-flash'),
     methodOverride = require('method-override'),
-    socket = require('socket.io'),
-    config = require('./config');
+    socket = require('socket.io');
 
-mongoose.connect(`mongodb://${config.mlabUser}:${config.mlabPass}@ds151282.mlab.com:51282/sharecode`);
+mongoose.connect(`mongodb://localhost:27017/sharecode`, { useNewUrlParser: true });
 
 var app = express();
 

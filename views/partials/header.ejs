@@ -7,41 +7,15 @@
 
     <title>Share Code</title>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/main.css">
   </head>
 
   <body>
-
-    <!-- Page Header -->
-    <section id="header">
-      <div class="wrapper">
-        <div class="header-content">
-          <a href="/">
-            <img src="/images/sharecode.png" alt="ShareCode">
-          </a>
-
-          <!-- Header Navigation -->
-          <nav>
-            <ul>
-                <li><a href="/projects">View Projects</a></li>
-              <% if (currentUser) { %>
-                <li><a href="/project/new">Create Project</a></li>
-                <li><a href="/profile/<%= currentUser._id %>">My Profile</a></li>
-                <li><a href="/logout">Logout</a></li>
-              <% } else { %>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/signup">Sign Up</a></li>
-              <% } %>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </section>
-
+    <% include navbar %>
     <section class="flash-message">
-      <div class="wrapper">
+      <div class="container">
         <% if (success && success.length !== 0) { %>
           <div class="flash-box success">
             <p><%= success %></p>

@@ -1,16 +1,26 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
-@import "imports.css";
+
+/* Imported modules */
+@import "modules/_reset.css";
+@import "modules/_variables.css";
+@import "modules/_global.css";
+@import "modules/_wrapper.css";
+@import "modules/_header.css";
+@import "modules/_flash.css";
+@import "modules/_project.css";
 
 
-@media (max-width: 768px) {
-  .header-content {
-    flex-direction: column;
-    height: 110px;
+@media (min-width: 768px) {
+  .entry-btn {
+    padding: .55em 1.2em !important;
+    background-color: var(--green);
+    color: white !important;
   }
 
-  .header-content a img {
-    margin: 10px 0;
+  .entry-btn:hover {
+    color: inherit;
   }
 }
+
