@@ -23,6 +23,7 @@ a.button {
 
 a.button:hover {
   color: white;
+  text-decoration: none;
 }
 
 a:hover {
@@ -34,13 +35,15 @@ img {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-size: 30px;
+  font-size: 2.2em;
   font-weight: 700;
+  font-family: 'Libre Baskerville', serif;
   margin: 10px 0;
 }
 
 h1 {
   margin-top: 50px;
+  margin-bottom: 30px;
   text-align: center;
 }
 
@@ -50,11 +53,10 @@ b, strong {
 
 form > button, input[type="submit"] {
   display: block;
-  width: 100%;
   border: none;
   background-color: var(--green);
   color: white;
-  padding: 10px 20px;
+  padding: 12px 50px;
   outline-color: var(--lightGrey);
   cursor: pointer;
 }
@@ -79,8 +81,8 @@ select {
 input, textarea, select {
   display: block;
   width: 100%;
-  margin-top: 2px;
-  margin-bottom: 12px;
+  margin-top: 3px;
+  margin-bottom: 18px;
   padding: 10px;
   outline-color: var(--lightGrey);
   border: 1px solid var(--lightGrey);
@@ -100,11 +102,6 @@ input:valid, select:valid, textarea:valid {
 
 input:invalid, select:invalid, textarea:invalid {
   border-color: var(--alert);
-}
-
-form {
-  width: 75%;
-  margin: 0 auto;
 }
 
 .landing {
