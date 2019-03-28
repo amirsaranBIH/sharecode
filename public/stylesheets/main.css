@@ -28,5 +28,15 @@
     width: 50%;
     margin: 0 auto;
   }
+
+  #header a {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .projects {
+    display: block;
+  }
 }
 

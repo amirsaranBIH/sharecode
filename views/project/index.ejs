@@ -2,24 +2,29 @@
 
 <div class="container">
 
-  <h1>View Other Projects</h1>
+  <h1>View All Projects</h1>
 
   <section class="projects">
-    <% projects.forEach((project) => { %>
+    <% projects.forEach(project => { %>
       <div class="project">
         <div class="project-section">
-          <h2><%= project.name %></h2>
-          <p class="project-language"><%= project.language %></p>
-          <p class="project-description"><%= project.description %></p>
-          <p class="project-contributors"><b>Contributors:</b>
+          <div>
+              <h2><%= project.name %></h2>
+              <p class="project-language"><%= project.language %></p>
+              <p class="project-description"><%= project.description.length > 40 ? project.description.substring(0, 40).trim() + "..." : project.description %></p>
+          </div>
+          <time datetime="<%= project.created.toISOString(); %>"><i class="fa fa-calendar-o"></i> <%= project.created.toDateString(); %></time>
+        </div>
+        <div class="project-section">
+          <p class="project-contributors">
+            <b><i class="fa fa-users"></i></b>
             <% project.contributors.forEach(contributor => { %>
               <a href="/profile/<%= contributor._id %>" title="View more projects from <%= contributor.username %>"><%= contributor.username %></a>
             <% }); %>
           </p>
-        </div>
-        <div class="project-section">
-          <time datetime="<%= project.created.toISOString(); %>"><%= project.created.toDateString(); %></time>
-          <a href="/project/<%= project._id %>">View Project</a>
+          <div class="project-section-link">
+            <a href="/project/<%= project._id %>" class="button"><i class="fa fa-link"></i> View Project</a>
+          </div>
         </div>
       </div>
     <% }); %>

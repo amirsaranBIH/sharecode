@@ -51,14 +51,18 @@ b, strong {
   font-weight: 700;
 }
 
-form > button, input[type="submit"] {
+button, input[type="submit"] {
   display: block;
   border: none;
   background-color: var(--green);
   color: white;
-  padding: 12px 50px;
+  padding: 10px 40px;
   outline-color: var(--lightGrey);
   cursor: pointer;
+}
+
+form button {
+  padding: 12px 50px;
 }
 
 button:disabled, input[type="submit"]:disabled {
@@ -72,11 +76,6 @@ textarea {
   min-width: 100%;
 }
 
-select {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-}
 
 input, textarea, select {
   display: block;

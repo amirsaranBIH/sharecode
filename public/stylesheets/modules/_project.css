@@ -60,14 +60,16 @@
 }
 
 .projects {
-  padding-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .project {
-  display: flex;
-  justify-content: space-between;
+  flex-basis: 48%;
   padding: 15px;
   border: 1px solid var(--green);
+  border-left: 8px solid var(--green);
   margin-bottom: 20px;
 }
 
@@ -81,6 +83,14 @@
 }
 
 .project-section {
+  display: flex;
+}
+
+.project-section time {
+  text-align: right;
+}
+
+.project-section > * {
   flex: 1;
 }
 
@@ -89,10 +99,13 @@
 }
 
 .project-section:last-child {
-  text-align: right;
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
+  align-items: center;
+}
+
+.project-section-link {
+  text-align: right;
 }
 
 .project-language {
@@ -108,9 +121,8 @@
 .project time {
   font-size: 13px;
 }
-
-.project-contributors, .project-description {
-  margin-top: 10px;
+.project-description {
+  margin: 10px 0;
 }
 
 .project-description {
