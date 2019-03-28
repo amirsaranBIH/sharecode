@@ -6,15 +6,13 @@
 }
 
 .project-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 10px;
 }
 
 .project-header-section {
-  flex: 1;
+  margin-top: 1em;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -23,7 +21,7 @@
 }
 
 .project-header-section button {
-  margin-left: 25px;
+  margin-left: 20px;
   width: auto;
 }
 
@@ -75,10 +73,6 @@
   margin-bottom: 20px;
 }
 
-.project:last-of-type {
-  margin-bottom: 0;
-}
-
 .project h2 {
   margin-top: 0;
   font-size: 20px;
@@ -112,12 +106,16 @@
 
 .project-language {
   display: inline-block;
-  padding: 5px 8px;
+  padding: 3px 8px;
   background-color: var(--green);
   color: white;
   border-radius: 2px;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 400;
   text-transform: uppercase;
+  position: relative;
+  bottom: 4px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .project time {

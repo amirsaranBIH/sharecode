@@ -3,7 +3,7 @@ var codeEditor = document.getElementById('code-editor'),
     downloadButton = document.getElementById('download-code-button'),
     copyButton = document.getElementById('copy-code-button'),
     language = document.getElementsByClassName('project-language')[0],
-    projectName = document.querySelector('.project-header-section h1').innerText;
+    projectName = document.querySelector('.project-header h1').innerText;
 
 var currentCode = codeEditor.value;
 

@@ -11,7 +11,7 @@
           <div>
               <h2><%= project.name %></h2>
               <p class="project-language"><%= project.language %></p>
-              <p class="project-description"><%= project.description.length > 40 ? project.description.substring(0, 40).trim() + "..." : project.description %></p>
+              <p class="project-description"><%= project.description %></p>
           </div>
           <time datetime="<%= project.created.toISOString(); %>"><i class="fa fa-calendar-o"></i> <%= project.created.toDateString(); %></time>
         </div>
@@ -25,8 +25,8 @@
           <div class="project-section-link">
             <a href="/project/<%= project._id %>" class="button"><i class="fa fa-link"></i> View Project</a>
           </div>
+          <i class="project-bg-icon fa fa-file-code-o"></i>
         </div>
-        <i class="project-bg-icon fa fa-file-code-o"></i>
       </div>
     <% }); %>
   </section>

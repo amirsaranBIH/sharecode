@@ -4,53 +4,51 @@
   <div class="container">
     <div class="project-content">
       <header class="project-header">
+        <h1><%= project.name %> <span class="project-language"><%= project.language %></span></h1>
         <div class="project-header-section">
-          <h1><%= project.name %></h1>
-          <p class="project-language"><%= project.language %></p>
-        </div>
-        <% if (canChangeCode) { %>
-          <div class="project-header-section">
+          <% if (canChangeCode) { %>
             <% if (JSON.stringify(project.owner) === JSON.stringify(currentUser._id)) { %>
-              <a href="/project/<%= project._id %>/settings"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
-            <% } %>
-            <button id="save-button" form="code-form" disabled>Save Changes</button>
-          </div>
-        <% } %>
+            <a href="/project/<%= project._id %>/settings"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+            <% } %> 
+            <button id="save-button" form="code-form" disabled><i class="fa fa-check"></i> Save</button>
+          <% } %>
+        </div>
       </header>
 
       <main class="project-code">
         <% if (canChangeCode) { %>
-          <form id="code-form" action="/project/<%= project._id %>/save?_method=PUT" method="POST">
-            <textarea id="code-editor" name="code"><%= project.code %></textarea>
-          </form>
-          <div class="code-options">
-            <% if (JSON.stringify(project.owner) === JSON.stringify(currentUser._id)) { %>
-              <div class="code-option-section">
-                <a class="button" href="/project/<%= project._id %>/contributor/add">Add New Contributor</a>
-              </div>
-            <% } %>
-            <div class="code-option-section">
-              <button id="copy-code-button">Copy Code</button>
-              <button id="download-code-button">Download Code</button>
-            </div>
+        <form id="code-form" action="/project/<%= project._id %>/save?_method=PUT" method="POST">
+          <textarea id="code-editor" name="code"><%= project.code %></textarea>
+        </form>
+        <div class="code-options">
+          <% if (JSON.stringify(project.owner) === JSON.stringify(currentUser._id)) { %>
+          <div class="code-option-section">
+            <a class="button" href="/project/<%= project._id %>/contributor/add"><i class="fa fa-user-plus"></i> Add
+              Contributor</a>
           </div>
+          <% } %>
+          <div class="code-option-section">
+            <button id="copy-code-button"><i class="fa fa-file-text"></i> Copy</button>
+            <button id="download-code-button"><i class="fa fa-download"></i> Download</button>
+          </div>
+        </div>
         <% } else { %>
-          <textarea id="code-editor" name="code" disabled><%= project.code %></textarea>
-          <div class="code-options">
-            <div class="code-option-section"></div>
-            <div class="code-option-section">
-              <button id="copy-code-button">Copy Code</button>
-              <button id="download-code-button">Download Code</button>
-            </div>
+        <textarea id="code-editor" name="code" disabled><%= project.code %></textarea>
+        <div class="code-options">
+          <div class="code-option-section"></div>
+          <div class="code-option-section">
+            <button id="copy-code-button"><i class="fa fa-file-text"></i> Copy</button>
+            <button id="download-code-button"><i class="fa fa-download"></i> Download</button>
           </div>
+        </div>
         <% } %>
       </main>
     </div>
   </div>
 </section>
 
-<% if (canChangeCode) { %>  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<% if (canChangeCode) { %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <% } %>
 <script src="/scripts/lib/filesaver.js"></script>
 <script src="/scripts/code.js"></script>
