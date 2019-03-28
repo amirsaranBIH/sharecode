@@ -66,6 +66,8 @@
 }
 
 .project {
+  position: relative;
+  overflow: hidden;
   flex-basis: 48%;
   padding: 15px;
   border: 1px solid var(--green);
@@ -137,4 +139,16 @@
 
 .contributors-list button, .delete-project button {
   background-color: var(--alert);
+}
+
+.project-bg-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: var(--green);
+  font-size: 12em;
+  transform: rotateZ(-30deg);
+  z-index: -1;
+  opacity: .35;
+  user-select: none;
 }
