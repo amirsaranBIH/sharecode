@@ -14,17 +14,16 @@ a {
   text-decoration: none;
 }
 
-a.button {
+.button {
   background-color: var(--green);
   color: white;
   padding: 10px 20px;
   outline-color: var(--lightGrey);
 }
 
-a.button-red {
+.button-red {
   background-color: var(--alert);
   color: white;
-  padding: 10px 20px;
   outline-color: var(--alert);
 }
 
@@ -117,6 +116,11 @@ input:invalid, select:invalid, textarea:invalid {
   margin: 20px 0;
 }
 
-.landing a.button {
-  margin: 0 10px;
+.button-group {
+	display: flex;
+	justify-content: center;
+}
+
+.button-group a + a {
+	margin-left: 1em;
 }

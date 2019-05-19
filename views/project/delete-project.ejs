@@ -6,8 +6,20 @@
   <form action="/project/<%= project._id %>/delete?_method=DELETE" method="POST">
 		<label for="project_name">Type project name to verify</label>
 		<input type="text" id="project_name" name="project_name" placeholder="Project Name">
-		<button>Delete Project</button>
+		<button id="delete_project" class="button-red" disabled>Delete Project</button>
     </form>
+	<script>
+		let input = document.getElementById('project_name');
+		let button = document.getElementById('delete_project');
+		input.addEventListener('input', () => {
+		console.log(input.value);
+			if (input.value === "<%= project.name %>") {
+				delete_project.disabled = false;
+			} else {
+				delete_project.disabled = true;
+			}
+		});
+	</script>
 </div>
 
 <% include ../partials/footer %>

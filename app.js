@@ -8,7 +8,8 @@ var express = require('express'),
     flash = require('connect-flash'),
     methodOverride = require('method-override'),
     socket = require('socket.io'),
-	dotenv = require('dotenv').config();
+	dotenv = require('dotenv').config(),
+	helmet = require('helmet');
 	
 if (process.env.NODE_ENV === 'production') {
 	mongoose.connect(`mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASS}@${process.env.MLAB_DEPLOYMENT}`);
@@ -42,6 +43,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.use(flash());
 app.use(methodOverride('_method'));
+app.use(helmet());
 
 app.use(function(req, res, next) {
   res.locals.currentUser = req.user;

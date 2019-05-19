@@ -123,9 +123,12 @@ router.route('/:id/contributor/add')
 // Remove contributor from list of contributors
 router.route('/:id/contributor/remove')
 	.get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
-		Project.findById(req.params.id).populate('contributors').exec((err, project) => {
+		Project.findById(req.params.id).populate('contributors owner').exec((err, project) => {
 			helper.handleError(err, 'back');
 
+			project.contributors = project.contributors.filter(contributor => {
+				return !helper.compareIds(contributor._id, project.owner._id);
+			});
 			res.render('project/remove-contributor', {project});
 		});
 	})

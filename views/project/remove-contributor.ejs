@@ -7,10 +7,12 @@
     <label for="username">Username</label>
     <select name="contributorId">
 		<% project.contributors.forEach(contributor => { %>
-			<option value="<%= contributor._id %>"><%= contributor.username %></option>
+			<% if (contributor._id !== project.owner._id) { %>
+				<option value="<%= contributor._id %>"><%= contributor.username %></option>
+			<% } %>
 		<% }) %>
 	</select>
-    <button>Remove Contributor</button>
+    <button class="button-red">Remove Contributor</button>
   </form>
 </div>
 

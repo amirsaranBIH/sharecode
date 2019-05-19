@@ -27,6 +27,7 @@
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
+    "helmet": "^3.18.0",
     "method-override": "^2.3.10",
     "mongoose": "^5.0.10",
     "passport": "^0.4.0",
