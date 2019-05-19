@@ -4,7 +4,7 @@
   "description": "ShareCode lets you code with other developers on one document in real time.",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production pm2 start app.js",
+    "start": "NODE_ENV=production pm2 start app.js --watch",
     "dev": "NODE_ENV=development nodemon --watch . app.js"
   },
   "repository": {
