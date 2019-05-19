@@ -1,0 +1,23 @@
+<% include ../partials/header %>
+
+<div class="wrapper">
+  <h1>Update Project</h1>
+
+  <form action="/project/<%= project._id %>/update?_method=PUT" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Name of the project" value="<%= project.name %>">
+    <label for="language">Select Language</label>
+    <select id="language" name="language">
+      <option value="html" selected>HTML</option>
+      <option value="css">CSS</option>
+      <option value="js">JavaScript</option>
+      <option value="php">PHP</option>
+      <option value="java">Java</option>
+    </select>
+    <label for="description">Description</label>
+    <textarea id="description" name="description" rows="6" placeholder="Describe your project"><%= project.description %></textarea>
+    <button>Update Project</button>
+  </form>
+</div>
+
+<% include ../partials/footer %>

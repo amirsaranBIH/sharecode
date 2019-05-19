@@ -21,6 +21,13 @@ a.button {
   outline-color: var(--lightGrey);
 }
 
+a.button-red {
+  background-color: var(--alert);
+  color: white;
+  padding: 10px 20px;
+  outline-color: var(--alert);
+}
+
 a.button:hover {
   color: white;
   text-decoration: none;

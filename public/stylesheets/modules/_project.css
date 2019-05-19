@@ -71,6 +71,9 @@
   border: 1px solid var(--green);
   border-left: 8px solid var(--green);
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .project h2 {

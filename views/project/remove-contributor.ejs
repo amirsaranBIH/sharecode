@@ -1,0 +1,17 @@
+<% include ../partials/header %>
+
+<div class="wrapper">
+  <h1>Remove Contributor</h1>
+
+  <form action="/project/<%= project._id %>/contributor/remove?_method=DELETE" method="POST">
+    <label for="username">Username</label>
+    <select name="contributorId">
+		<% project.contributors.forEach(contributor => { %>
+			<option value="<%= contributor._id %>"><%= contributor.username %></option>
+		<% }) %>
+	</select>
+    <button>Remove Contributor</button>
+  </form>
+</div>
+
+<% include ../partials/footer %>

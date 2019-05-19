@@ -12,9 +12,14 @@ router.get('/', (req, res) => {
 // Profile page of an user
 router.route('/profile/:id')
     .get((req, res) => {
-      User.findById(req.params.id).populate('projects').exec((err, user) => {
-        if (err) {
-          res.redirect('back');
+      User.findById(req.params.id).populate({ 
+		 path: 'projects',
+		 populate: {
+		   path: 'contributors'
+		 } 
+	  }).exec((err, user) => {
+        if (!user) {
+			return res.render('404');
         }
         res.render('profile', {user});
       });
@@ -38,7 +43,7 @@ router.get('/projects', (req, res) => {
 
 // If the user visits a page that does not exist
 router.get('*', (req, res) => {
-  res.status(404).send('Error 404 - Page Not Found!');
+  res.status(404).render('404');
 });
 
 module.exports = router;

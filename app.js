@@ -7,9 +7,17 @@ var express = require('express'),
     User = require('./models/User'),
     flash = require('connect-flash'),
     methodOverride = require('method-override'),
-    socket = require('socket.io');
-
-mongoose.connect(`mongodb://localhost:27017/sharecode`, { useNewUrlParser: true });
+    socket = require('socket.io'),
+	dotenv = require('dotenv').config();
+	
+if (process.env.NODE_ENV === 'production') {
+	mongoose.connect(`mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASS}@${process.env.MLAB_DEPLOYMENT}`);
+} else if (process.env.NODE_ENV === 'development') {
+	mongoose.connect(`mongodb://localhost:27017/sharecode`, { useNewUrlParser: true });
+} else {
+	console.error('**process.env.NODE_ENV is not set!**');
+	return;
+}
 
 var app = express();
 

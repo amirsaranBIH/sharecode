@@ -37,7 +37,9 @@ router.route('/new')
 router.route('/:id')
     .get((req, res) => {
       Project.findById(req.params.id).populate('contributors').exec((err, project) => {
-        helper.handleError(err, '/');
+		if (!project) {
+			return res.render('404');
+		}
 
         var canChangeCode = false;
 
@@ -117,58 +119,66 @@ router.route('/:id/contributor/add')
         })
       });
     });
-
+	
 // Remove contributor from list of contributors
-router.delete('/:id/contributor/:contributorId/remove', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
-  Project.findById(req.params.id).populate('contributors').exec((err, project) => {
-    helper.handleError(err, 'back');
+router.route('/:id/contributor/remove')
+	.get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+		Project.findById(req.params.id).populate('contributors').exec((err, project) => {
+			helper.handleError(err, 'back');
 
-    // Finds the position of the contributor
-    var contributorPos = project.contributors.findIndex(contributor => {
-      return helper.compareIds(contributor._id, req.params.contributorId);
-    });
+			res.render('project/remove-contributor', {project});
+		});
+	})
+	.delete(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+	  Project.findById(req.params.id).populate('contributors').exec((err, project) => {
+		helper.handleError(err, 'back');
 
-    // If it finds something remove it
-    if (contributorPos !== -1) {
-      var removedContributor = project.contributors.splice(contributorPos, 1);
-      User.findById(removedContributor[0]._id, (err, user) => {
-        helper.handleError(err, `/project/${project._id}`);
+		// Finds the position of the contributor
+		var contributorPos = project.contributors.findIndex(contributor => {
+		  return helper.compareIds(contributor._id, req.body.contributorId);
+		});
 
-        if (helper.compareIds(removedContributor[0]._id, req.user._id)) {
-          req.flash('error', 'You can\'t remove yourself from the contributor list.');
-          return res.redirect(`/project/${project._id}`);
-        }
+		// If it finds something remove it
+		if (contributorPos !== -1) {
+		  var removedContributor = project.contributors.splice(contributorPos, 1);
+		  User.findById(removedContributor[0]._id, (err, user) => {
+			helper.handleError(err, `/project/${project._id}`);
 
-        // Finds the position of the project in the contributors list of projects
-        var projectPos = user.projects.findIndex(project => {
-          return helper.compareIds(project, req.params.id);
-        });
+			if (helper.compareIds(removedContributor[0]._id, req.user._id)) {
+			  req.flash('error', 'You can\'t remove yourself from the contributor list.');
+			  return res.redirect(`/project/${project._id}`);
+			}
 
-        // Removes the project from the list
-        user.projects.splice(projectPos, 1);
-        user.save(err => {
-          helper.handleError(err, 'back');
+			// Finds the position of the project in the contributors list of projects
+			var projectPos = user.projects.findIndex(project => {
+			  return helper.compareIds(project, req.params.id);
+			});
 
-          project.save(err => {
-            helper.handleError(err, 'back');
+			// Removes the project from the list
+			user.projects.splice(projectPos, 1);
+			user.save(err => {
+			  helper.handleError(err, 'back');
 
-            req.flash('success', `Successfully removed contributor ${removedContributor[0].username} from project.`);
-            res.redirect(`/project/${project._id}`);
-          });
-        });
-      });
-    // If it doesn't find a contributor redirect with flash message
-    } else {
-      req.flash('error', 'Can\'t find contributor.');
-      return res.redirect('back');
-    }
-  });
-});
+			  project.save(err => {
+				helper.handleError(err, 'back');
+
+				req.flash('success', `Successfully removed contributor ${removedContributor[0].username} from project.`);
+				res.redirect(`/project/${project._id}`);
+			  });
+			});
+		  });
+		} else {
+			// If it doesn't find a contributor redirect with flash message
+		  req.flash('error', 'Can\'t find contributor.');
+		  return res.redirect('back');
+		}
+	  });
+	});
 
 // Update the project, remove contributor and delete project
 router.route('/:id/settings')
     .get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
-      Project.findById(req.params.id).populate('contributors').exec((err, project) => {
+      Project.findById(req.params.id, (err, project) => {
         helper.handleError(err, `/project/${project._id}`);
 
         res.render('project/settings', {project});
@@ -176,39 +186,63 @@ router.route('/:id/settings')
     });
 
 // Update a project
-router.put('/:id/update', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
-  Project.findByIdAndUpdate(req.params.id, {
-    name: req.body.name,
-    language: req.body.language,
-    description: req.body.description
-  }, (err, project) => {
-    helper.handleError(err, `/project/${project._id}`);
+router.route('/:id/update')
+	.get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+	  Project.findById(req.params.id, (err, project) => {
+		helper.handleError(err, 'back');
 
-    req.flash('success', 'Successfully updated project.');
-    res.redirect(`/project/${project._id}`);
-  });
-});
+		res.render('project/update-project', {project});
+	  });
+	})
+	.put(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+	  Project.findByIdAndUpdate(req.params.id, {
+		name: req.body.name,
+		language: req.body.language,
+		description: req.body.description
+	  }, (err, project) => {
+		helper.handleError(err, `/project/${project._id}`);
+
+		req.flash('success', 'Successfully updated project.');
+		res.redirect(`/project/${project._id}`);
+	  });
+	});
 
 // Delete a project
-router.delete('/:id/delete', middleware.isLoggedIn, middleware.isContributor, (req, res) => {
-  Project.findByIdAndRemove(req.params.id, (err, project) => {
-    helper.handleError(err, `/profile/${req.user._id}`);
+router.route('/:id/delete')
+.get(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+	Project.findById(req.params.id, (err, project) => {
+		helper.handleError(err, 'back');
 
-    project.contributors.forEach(contributor => {
-      User.findById(contributor, (err, user) => {
-        helper.handleError(err, `/profile/${req.user._id}`);
+		res.render('project/delete-project', {project});
+	  });
+})
+.delete(middleware.isLoggedIn, middleware.isContributor, (req, res) => {
+	Project.findById(req.params.id).populate('contributors').exec((err, projectToDelete) => {
+		if (projectToDelete.name !== req.body.project_name) {
+			helper.handleError(err, `/profile/${req.user._id}`);
+			req.flash('error', 'You didn\'t type the right name of the project.');
+			return res.redirect(`/project/${projectToDelete._id}/delete`);
+		} else {
+			Project.deleteOne({ _id: projectToDelete._id }, (err, project) => {
+				helper.handleError(err, `/profile/${req.user._id}`);
 
-        var deletedProjectPos = user.projects.some(projectId => {
-          return helper.compareIds(projectId, project._id);
-        });
-        user.projects.splice(deletedProjectPos, 1);
-        user.save();
-      });
-    });
+				projectToDelete.contributors.forEach(contributor => {
+				  User.findById(contributor, (err, user) => {
+					helper.handleError(err, `/profile/${req.user._id}`);
 
-    req.flash('success', 'Successfully removed project named ' + project.name);
-    return res.redirect(`/profile/${req.user._id}`);
-  });
+					var deletedProjectPos = user.projects.some(projectId => {
+					  return helper.compareIds(projectId, projectToDelete._id);
+					});
+					user.projects.splice(deletedProjectPos, 1);
+					user.save();
+				  });
+				});
+
+				req.flash('success', 'Successfully removed project named ' + projectToDelete.name);
+				return res.redirect(`/profile/${req.user._id}`);
+			});
+		}
+	});
 });
 
 module.exports = router;
