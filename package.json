@@ -4,7 +4,7 @@
   "description": "ShareCode lets you code with other developers on one document in real time.",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production pm2 start app.js --watch",
+    "start": "NODE_ENV=production node app.js",
     "dev": "NODE_ENV=development nodemon --watch . app.js"
   },
   "repository": {
@@ -32,7 +32,6 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.0",
-    "pm2": "^3.5.0",
     "socket.io": "^2.0.4"
   },
   "devDependencies": {
