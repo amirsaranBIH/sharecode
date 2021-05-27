@@ -12,7 +12,7 @@ var express = require('express'),
 	helmet = require('helmet');
 	
 if (process.env.NODE_ENV === 'production') {
-	mongoose.connect(`mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASS}@${process.env.MLAB_DEPLOYMENT}`);
+	mongoose.connect(`mongodb+srv://${process.env.MLAB_USER}:${process.env.MLAB_PASS}@${process.env.MLAB_DEPLOYMENT}`);
 } else if (process.env.NODE_ENV === 'development') {
 	mongoose.connect(`mongodb://localhost:27017/sharecode`, { useNewUrlParser: true });
 } else {
